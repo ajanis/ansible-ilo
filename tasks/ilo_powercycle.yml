@@ -1,0 +1,24 @@
+---
+- name: Get current power status
+  command: "hpilo_cli {{ item.host }} --json --login='{{ item.login }}' --password='{{ item.password }}' get_host_power_status"
+  register: hpilo_cli_get_host_power_status
+  delegate_to: localhost
+  loop: "{{ ilo_hosts }}"
+
+- name: Record power status
+  set_fact:
+    power_status: "{% if 'ON' in item.stdout %}ON{% else %}OFF{% endif %}"
+  delegate_to: localhost
+  loop: "{{ hpilo_cli_get_host_power_status.results }}"
+
+- name: Power on server - if it is powered down
+  command: "hpilo_cli {{ item.item.host }} --json --login='{{ item.item.login }}' --password='{{ item.item.password }}' press_pwr_btn"
+  when: power_status != "ON"
+  delegate_to: localhost
+  loop: "{{ hpilo_cli_get_host_power_status.results }}"
+
+- name: Reboot server - if it is powered up
+  command: "hpilo_cli {{ item.item.host }} --json --login='{{ item.item.login }}' --password='{{ item.item.password }}' cold_boot_server"
+  when: power_status == "ON"
+  delegate_to: localhost
+  loop: "{{ hpilo_cli_get_host_power_status.results }}"

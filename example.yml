@@ -1,0 +1,11 @@
+---
+- name: "Upgrade iLO"
+  hosts: all
+  remote_user: root
+  vars_files:
+    - vault.yml
+  tasks:
+    - include_vars:
+        dir: extra_vars
+    - import_role:
+        name: ilo

@@ -1,0 +1,13 @@
+---
+# defaults file for ansible-ilo
+
+ilo_firmware_version: latest
+ilo_hosts: []
+#  - host: 10.255.71.15
+#    login: Administrator
+#    password: "{{ vault_ilo_password }}"
+#    state: boot_once
+#    ssl_version: TLSv1
+#    media: cdrom
+#    image: "{{ ilo_image_url }}"
+#    force: yes

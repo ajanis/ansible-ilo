@@ -1,0 +1,6 @@
+---
+# tasks file for ansible-ilo
+
+- import_tasks: ilo_upgrade.yml
+- import_tasks: ilo_netboot.yml
+- import_tasks: ilo_powercycle.yml

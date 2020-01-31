@@ -1,0 +1,6 @@
+---
+- name: "Set One-Time-Boot = Network"
+  command: "hpilo_cli {{ item.host }} --json --login={{ item.login }} --password={{ item.password }} set_one_time_boot device=network"
+  register: hpilo_cli_netboot
+  delegate_to: localhost
+  loop: "{{ ilo_hosts }}"
