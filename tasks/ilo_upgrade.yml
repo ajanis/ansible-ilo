@@ -1,6 +1,46 @@
 ---
 - name: Update iLO Firmware
   command: "hpilo_cli {{ item.host }} --json --login={{ item.login }} --password={{ item.password }} update_rib_firmware version={{ ilo_firmware_version }}"
-  register: hpilo_cli_update_firmware
   delegate_to: localhost
   loop: "{{ ilo_hosts }}"
+
+#- debug:
+#    msg: "{{ item.stdout }}"
+#  loop: "{{ hpilo_cli_update_firmware.results }}"
+#  delegate_to: localhost
+
+#- set_fact:
+#    host_upgraded: True
+#  when: '"Already up-to-date" not in item.stdout'
+#  register: reboot_list
+#  loop: "{{ hpilo_cli_update_firmware.results }}"
+
+#- debug:
+#    msg: "{{ item }}"
+#  loop: "{{ reboot_list.results }}"
+
+#- name: "power on"
+#  command: "hpilo_cli {{ item.item.item.host }} --json --login={{ item.item.item.login }} --password={{ item.item.item.password }} cold_boot_server"
+#  when: item.ansible_facts.host_upgraded
+#  loop: "{{ reboot_list.results }}"
+
+#- name: "check power"
+#  command: "hpilo_cli {{ item.item.item.host }} --json --login={{ item.item.item.login }} --password={{ item.item.item.password }} get_host_power_status"
+#  register: hpilo_status
+#  retries: 5
+#  delay: 15
+#  until: hpilo_status.stdout.find("ON") != -1
+#  when: host_upgraded
+#  loop: "{{ reboot_list.results }}"
+
+#- name: Check iLo power
+#  command: "hpilo_cli {{ item.host }} --json --login={{ item.login }} --password={{ item.password }} update_rib_firmware version={{ ilo_firmware_version }}"
+#  #ommand: "hpilo_cli 10.255.71.14 --json --login='Administrator' --password='WWTwwt1!' update_rib_firmware version=latest"
+#  register: hpilo_cli_update_firmware
+#  delegate_to: localhost
+#  loop: "{{ ilo_hosts }}"
+#
+#- debug:
+#    msg: "{{ item.item.item.item.host }} upgraded and back online"
+#  loop: "{{ hpilo_status.results }}"
+#  when: item.rc == 0
