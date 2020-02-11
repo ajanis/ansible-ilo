@@ -2,5 +2,12 @@
 # tasks file for ansible-ilo
 
 - import_tasks: ilo_upgrade.yml
+  tags:
+    - ilo-upgrade
 - import_tasks: ilo_netboot.yml
+  tags:
+    - ilo-netboot
 - import_tasks: ilo_powercycle.yml
+  tags:
+    - ilo-powercycle
+    - ilo-netboot
