@@ -1,8 +1,8 @@
 ---
 - name: Update iLO Firmware
-  command: "hpilo_cli {{ item.host }} --json --login={{ item.login }} --password={{ item.password }} update_rib_firmware version={{ ilo_firmware_version }}"
+  command: "hpilo_cli {{ item.ipmi_ip }} --json --login={{ item.ipmi_username }} --password={{ item.ipmi_password }} update_rib_firmware version={{ ilo_firmware_version }}"
   delegate_to: localhost
-  loop: "{{ ilo_hosts }}"
+  loop: "{{ foreman_hosts }}"
 
 #- debug:
 #    msg: "{{ item.stdout }}"
